@@ -8,7 +8,7 @@ import { useEffect } from 'react'
 // Fix untuk icon Leaflet yang sering hilang di Next.js
 const icon = L.divIcon({
   className: 'custom-icon',
-  html: `<div class="size-4 bg-[var(--accent)] rounded-full border-2 border-white shadow-lg animate-pulse"></div>`,
+  html: `<div class="size-4 bg-(--accent) rounded-full border-2 border-white shadow-lg animate-pulse"></div>`,
   iconSize: [16, 16],
 })
 
@@ -20,7 +20,7 @@ export default function Map() {
   const polyline: [number, number][] = [bogor, brisbane]
 
   return (
-    <div className="h-[350px] w-full rounded-2xl overflow-hidden border border-[var(--border)] z-0">
+    <div className="h-87.5 w-full rounded-2xl overflow-hidden border border-(--border) z-0">
       <MapContainer 
         center={[-17.0, 130.0]} 
         zoom={3} 

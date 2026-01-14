@@ -7,7 +7,7 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="mt-20 border-t border-[var(--border)] bg-[var(--bg)] transition-colors duration-300">
+    <footer className="mt-20 border-t border-(--border) bg-(--bg) transition-colors duration-300">
       <div className="max-w-5xl mx-auto px-6 py-12">
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 items-start">
@@ -15,10 +15,10 @@ export default function Footer() {
           {/* LEFT: Brand & Tagline */}
           <div className="space-y-4">
             <div className="flex items-center gap-2 font-black text-xl tracking-tighter">
-              <span className="text-[var(--accent)]">L</span>
-              <span className="text-[var(--text)]">DM</span>
+              <span className="text-(--accent)">L</span>
+              <span className="text-(--text)">DM</span>
             </div>
-            <p className="text-sm text-[var(--text)] opacity-60 leading-relaxed max-w-[200px]">
+            <p className="text-sm text-(--text) opacity-60 leading-relaxed max-w-50">
               Digital space for two hearts navigating different timezones.
             </p>
           </div>
@@ -29,13 +29,13 @@ export default function Footer() {
               <motion.div
                 animate={{ scale: [1, 1.2, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
-                className="size-10 rounded-full bg-[var(--accent)]/10 flex items-center justify-center"
+                className="size-10 rounded-full bg-(--accent)/10 flex items-center justify-center"
               >
-                <Heart className="size-5 text-[var(--accent)] fill-[var(--accent)]" />
+                <Heart className="size-5 text-(--accent) fill-(--accent)" />
               </motion.div>
               {/* Wireless connection line effect */}
-              <div className="absolute top-1/2 left-full w-12 h-px bg-linear-to-r from-[var(--accent)]/50 to-transparent hidden md:block" />
-              <div className="absolute top-1/2 right-full w-12 h-px bg-linear-to-l from-[var(--accent)]/50 to-transparent hidden md:block" />
+              <div className="absolute top-1/2 left-full w-12 h-px bg-linear-to-r from-(--accent)/50 to-transparent hidden md:block" />
+              <div className="absolute top-1/2 right-full w-12 h-px bg-linear-to-l from-(--accent)/50 to-transparent hidden md:block" />
             </div>
             <span className="text-[10px] font-bold uppercase tracking-[0.2em] opacity-40">Synchronized</span>
           </div>
@@ -62,7 +62,7 @@ export default function Footer() {
       </div>
 
       {/* Very bottom decorative gradient */}
-      <div className="h-1.5 w-full bg-linear-to-r from-indigo-500 via-[var(--accent)] to-amber-500 opacity-20" />
+      <div className="h-1.5 w-full bg-linear-to-r from-indigo-500 via-(--accent) to-amber-500 opacity-20" />
     </footer>
   );
 }
