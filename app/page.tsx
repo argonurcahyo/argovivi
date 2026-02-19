@@ -6,6 +6,8 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { MapPin, Heart, GraduationCap, CloudRain, ArrowRight, Compass, Plane } from 'lucide-react'
 import Head from 'next/head'
+import ImsakiyahCard from '@/components/ImsakiyahCard'
+import { bogorImsakiyah, brisbaneImsakiyah } from '@/data/imsakiyah'
 
 
 const DynamicMap = dynamic(() => import('@/components/Map'), {
@@ -51,16 +53,16 @@ export default function Home() {
         </div>
 
         <p className="max-w-xl mx-auto text-(--text) opacity-70 text-lg leading-relaxed italic">
-          "Jarak hanyalah jeda untuk rindu yang lebih bermakna."
+          &quot;Jarak hanyalah jeda untuk rindu yang lebih bermakna.&quot;
         </p>
       </section>
 
       {/* DUAL WORLD CARDS WITH CARICATURES */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative px-2">
-        
+
         {/* Connection Arrow */}
         <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 size-12 items-center justify-center rounded-full bg-(--bg) border-2 border-(--accent) shadow-lg shadow-(--accent)/20">
-           <Heart className="size-5 text-(--accent) fill-(--accent)" />
+          <Heart className="size-5 text-(--accent) fill-(--accent)" />
         </div>
 
         {/* Argo's Card */}
@@ -69,13 +71,13 @@ export default function Home() {
           className="card relative overflow-visible group flex flex-col justify-between min-h-65 transition-all hover:shadow-2xl"
         >
           {/* Caricature Placeholder - Argo */}
-          <motion.div 
+          <motion.div
             animate={{ y: [0, -10, 0] }}
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
             className="absolute -top-12 -right-4 md:-right-8 z-10 w-32 h-32 md:w-40 md:h-40"
           >
             <div className="relative w-full h-full drop-shadow-2xl">
-              <Image 
+              <Image
                 src="/photos/5b7fb179-0932-4122-97a9-7651e11eac28.webp" // Pastikan ada di /public/argo.png
                 alt="Karikatur Argo"
                 fill
@@ -109,13 +111,13 @@ export default function Home() {
           className="card relative overflow-visible group flex flex-col justify-between min-h-65 transition-all hover:shadow-2xl"
         >
           {/* Caricature Placeholder - Vivi */}
-          <motion.div 
+          <motion.div
             animate={{ y: [0, -10, 0] }}
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
             className="absolute -top-12 -right-4 md:-right-8 z-10 w-32 h-32 md:w-40 md:h-40"
           >
             <div className="relative w-full h-full drop-shadow-2xl">
-              <Image 
+              <Image
                 src="/photos/291ec3d5-be69-4e1b-8575-754a1545dc3e.webp" // Pastikan ada di /public/vivi.png
                 alt="Karikatur Vivi"
                 fill
@@ -144,6 +146,21 @@ export default function Home() {
         </motion.div>
       </div>
 
+      {/* IMSAKIYAH SECTION */}
+      <section className="space-y-6 pt-4 px-2">
+        <div className="flex items-center gap-3">
+          <div className="p-2 rounded-xl bg-(--accent)/20">
+            <CloudRain className="size-5 text-(--accent)" />
+          </div>
+          <h2 className="text-xl font-black tracking-tight text-(--text)">Jadwal Imsakiyah</h2>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          <ImsakiyahCard schedule={bogorImsakiyah} />
+          <ImsakiyahCard schedule={brisbaneImsakiyah} />
+        </div>
+      </section>
+
       {/* MAP SECTION */}
       <section className="space-y-6 pt-4 px-2">
         <div className="flex items-center justify-between">
@@ -161,20 +178,12 @@ export default function Home() {
 
         <div className="card p-1.5! relative overflow-hidden group">
           <DynamicMap />
-          <div className="grid grid-cols-2 p-4 bg-(--bg)/90 backdrop-blur-sm rounded-b-xl border-t border-(--border)">
-            <div className="flex items-center gap-2 text-(--text)">
-              <div className="size-2 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.8)]" />
-              <span className="text-xs font-black tracking-tight uppercase">Argo's Side</span>
-            </div>
-            <div className="flex items-center gap-2 justify-end text-(--text)">
-              <span className="text-xs font-black tracking-tight uppercase">Vivi's Side</span>
-              <div className="size-2 rounded-full bg-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.8)]" />
-            </div>
-          </div>
         </div>
       </section>
 
-      
+
+
+
     </div>
   )
 }
