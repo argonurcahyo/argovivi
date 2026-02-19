@@ -1,8 +1,10 @@
+/* eslint-disable react-hooks/set-state-in-effect */
+/* eslint-disable react-hooks/preserve-manual-memoization */
 'use client'
 
 import { useState, useEffect, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { MapPin, Zap, Calendar as CalendarIcon, ChevronDown, Moon, Sun, Clock } from 'lucide-react'
+import { MapPin, UtensilsCrossed, Calendar as CalendarIcon, ChevronDown, Moon, Sun, Clock } from 'lucide-react'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
@@ -173,7 +175,11 @@ export default function ImsakiyahCard({ schedule }: ImsakiyahCardProps) {
               animate={{ opacity: 1, scale: 1 }}
               className="relative p-6 rounded-2xl bg-gradient-to-br from-(--accent) to-(--accent)/90 text-white shadow-lg shadow-(--accent)/20 overflow-hidden"
             >
-              <Zap className="absolute -bottom-2 -right-2 size-20 opacity-10 rotate-12" />
+              {nextEvent.label.includes('Buka') ? (
+                <UtensilsCrossed className="absolute -bottom-2 -right-2 size-20 opacity-10 rotate-12" />
+              ) : (
+                <Moon className="absolute -bottom-2 -right-2 size-20 opacity-10 rotate-12" />
+              )}
               
               <div className="relative z-10 space-y-3">
                 <div className="flex items-center gap-2">
