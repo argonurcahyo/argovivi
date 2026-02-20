@@ -1,10 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/set-state-in-effect */
-/* eslint-disable react-hooks/preserve-manual-memoization */
 'use client'
 
 import { useState, useEffect, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { MapPin, UtensilsCrossed, Calendar as CalendarIcon, ChevronDown, Moon, Sun, Clock } from 'lucide-react'
+import { MapPin, UtensilsCrossed, ChevronDown, Moon, Sun, Clock } from 'lucide-react'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
@@ -17,10 +17,19 @@ dayjs.extend(isBetween)
 
 type ImsakiyahCardProps = {
   schedule: ImsakiyahSchedule
+  color?: string
 }
 
-export default function ImsakiyahCard({ schedule }: ImsakiyahCardProps) {
-  const [selectedDate, setSelectedDate] = useState(schedule.times[0]?.date || '')
+export default function ImsakiyahCard({ schedule, color }: ImsakiyahCardProps) {
+  const accentColor = color === 'blue' ? 'text-blue-600' : color === 'orange' ? 'text-orange-600' : 'text-(--accent)'
+  // Auto-select today's date based on schedule timezone
+  const getTodayDate = () => {
+    const today = dayjs().tz(schedule.timezone).format('YYYY-MM-DD')
+    const todayExists = schedule.times.find(t => t.date === today)
+    return todayExists ? today : (schedule.times[0]?.date || '')
+  }
+  
+  const [selectedDate, setSelectedDate] = useState(getTodayDate())
   const [currentTime, setCurrentTime] = useState(dayjs())
   const [mounted, setMounted] = useState(false)
   
@@ -80,7 +89,7 @@ export default function ImsakiyahCard({ schedule }: ImsakiyahCardProps) {
       }
     }
     return null
-  }, [mounted, currentDayData, schedule.timezone, selectedDate, currentTime])
+  }, [mounted, currentDayData, schedule.timezone, schedule.times, selectedDate, currentTime])
 
   // Calculate day progress (Imsak to Maghrib)
   const dayProgress = useMemo(() => {
@@ -100,13 +109,13 @@ export default function ImsakiyahCard({ schedule }: ImsakiyahCardProps) {
     } else {
       return { percent: Math.round((elapsed / totalDuration) * 100), status: 'active' }
     }
-  }, [currentDayData, selectedDate, schedule.timezone, currentTime])
+  }, [currentDayData, selectedDate, schedule.timezone])
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="group relative flex flex-col h-full overflow-hidden rounded-[2rem] border border-(--border) bg-(--card) transition-shadow hover:shadow-xl"
+      className="group relative flex flex-col h-full overflow-hidden rounded-4xl border border-(--border) bg-(--card) transition-shadow hover:shadow-xl"
     >
       {/* Puasa Progress Bar */}
       {dayProgress && selectedDate === dayjs().tz(schedule.timezone).format('YYYY-MM-DD') && (
@@ -117,9 +126,7 @@ export default function ImsakiyahCard({ schedule }: ImsakiyahCardProps) {
             transition={{ duration: 0.3 }}
             className={`h-full transition-all ${
               dayProgress.status === 'active' 
-                ? 'bg-gradient-to-r from-(--accent) via-(--accent) to-(--accent)/60' 
-                : dayProgress.status === 'completed'
-                ? 'bg-(--border)'
+                ? `${accentColor} bg-current` 
                 : 'bg-(--border)'
             }`}
           />
@@ -132,7 +139,7 @@ export default function ImsakiyahCard({ schedule }: ImsakiyahCardProps) {
               transition={{ duration: 0.3 }}
               className={`w-1.5 h-1.5 rounded-full -ml-1 transition-colors ${
                 dayProgress.status === 'active' 
-                  ? 'bg-(--accent) shadow-lg shadow-(--accent)/50' 
+                  ? `${accentColor} bg-current shadow-lg` 
                   : 'bg-(--border)'
               }`}
             />
@@ -144,8 +151,8 @@ export default function ImsakiyahCard({ schedule }: ImsakiyahCardProps) {
         {/* Header: Location & Date */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-full bg-(--accent)/10 text-(--accent)">
-              <MapPin className="size-4" />
+            <div className={`p-2 rounded-full ${accentColor} bg-current/10`}>
+              <MapPin className={`size-4 ${accentColor}`} />
             </div>
             <span className="text-sm font-bold tracking-tight text-(--text)">{schedule.region}</span>
           </div>
@@ -173,7 +180,13 @@ export default function ImsakiyahCard({ schedule }: ImsakiyahCardProps) {
               key="countdown"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="relative p-6 rounded-2xl bg-gradient-to-br from-(--accent) to-(--accent)/90 text-white shadow-lg shadow-(--accent)/20 overflow-hidden"
+              className={`relative p-6 rounded-2xl bg-gradient-to-br text-white shadow-lg overflow-hidden ${
+                color === 'blue' 
+                  ? 'from-blue-600 to-blue-700' 
+                  : color === 'orange'
+                  ? 'from-orange-600 to-orange-700'
+                  : 'from-(--accent) to-(--accent)/90'
+              }`}
             >
               {nextEvent.label.includes('Buka') ? (
                 <UtensilsCrossed className="absolute -bottom-2 -right-2 size-20 opacity-10 rotate-12" />
@@ -221,19 +234,19 @@ export default function ImsakiyahCard({ schedule }: ImsakiyahCardProps) {
                 key={slot.label}
                 className={`flex flex-col p-3.5 rounded-2xl border transition-all ${
                   isHighlighted 
-                  ? 'bg-(--accent)/5 border-(--accent) ring-1 ring-(--accent)/10' 
+                  ? `${accentColor} bg-current/5 border-current ring-1 ring-current/10` 
                   : 'bg-(--bg)/50 border-(--border) hover:border-(--text)/10'
                 }`}
               >
                 <div className="flex items-center gap-2 mb-2">
-                  <div className={`${isHighlighted ? 'text-(--accent)' : 'opacity-30'}`}>
+                  <div className={`${isHighlighted ? accentColor : 'opacity-30'}`}>
                     {slot.icon}
                   </div>
-                  <span className={`text-[10px] font-black uppercase tracking-widest ${isHighlighted ? 'text-(--accent)' : 'opacity-40'}`}>
+                  <span className={`text-[10px] font-black uppercase tracking-widest ${isHighlighted ? accentColor : 'opacity-40'}`}>
                     {slot.label}
                   </span>
                 </div>
-                <span className={`text-base font-mono font-bold ${isHighlighted ? 'text-(--accent)' : 'text-(--text)'}`}>
+                <span className={`text-base font-mono font-bold ${isHighlighted ? accentColor : 'text-(--text)'}`}>
                   {slot.value}
                 </span>
               </div>

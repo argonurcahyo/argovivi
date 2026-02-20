@@ -61,3 +61,10 @@ body {
   border-radius: 0.75rem;
   font-weight: 500;
 }
+
+.custom-popup .leaflet-popup-content-wrapper {
+  @apply rounded-xl border-none shadow-xl bg-white/95 backdrop-blur-sm;
+}
+.custom-popup .leaflet-popup-tip {
+  @apply shadow-none bg-white/95;
+}

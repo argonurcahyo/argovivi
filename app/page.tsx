@@ -4,10 +4,12 @@ import dynamic from 'next/dynamic'
 import Image from 'next/image' // Import Image Next.js
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { MapPin, Heart, GraduationCap, CloudRain, ArrowRight, Compass, Plane } from 'lucide-react'
+import { MapPin, Heart, GraduationCap, CloudRain, ArrowRight, Compass, Plane, CloudSun, Droplets, Wind } from 'lucide-react'
 import Head from 'next/head'
 import ImsakiyahCard from '@/components/ImsakiyahCard'
+import WeatherCard from '@/components/WeatherCard'
 import { bogorImsakiyah, brisbaneImsakiyah } from '@/data/imsakiyah'
+import { useWeather } from '@/lib/useWeather'
 
 
 const DynamicMap = dynamic(() => import('@/components/Map'), {
@@ -17,6 +19,8 @@ const DynamicMap = dynamic(() => import('@/components/Map'), {
 
 export default function Home() {
   const [times, setTimes] = useState({ bogor: '--:--', brisbane: '--:--' })
+  const bogorWeather = useWeather(-6.5028, 106.8166)
+  const brisbaneWeather = useWeather(-27.4698, 153.0251)
 
   useEffect(() => {
     const updateTime = () => {
@@ -90,9 +94,24 @@ export default function Home() {
             <span className="text-[10px] font-black text-blue-500 uppercase tracking-widest bg-blue-500/10 px-2 py-0.5 rounded-md">Bogor Base</span>
             <h3 className="text-3xl font-black tracking-tighter text-(--text)">ARGO</h3>
             <div className="flex items-center gap-1.5 text-blue-600/60 font-medium text-xs">
-              <CloudRain className="size-3" /> Kota Hujan
+              <CloudRain className="size-3" /> Rain City
             </div>
           </div>
+
+          {/* Weather Info */}
+          {bogorWeather.weather && (
+            <div className="mt-4 flex items-center gap-3 p-3 rounded-xl bg-blue-500/5 border border-blue-500/10">
+              <bogorWeather.weather.weatherIcon className="size-5 text-blue-600" />
+              <div className="flex-1">
+                <p className="text-sm font-black text-(--text)">{bogorWeather.weather.temperature}°C</p>
+                <p className="text-[9px] font-bold text-blue-600/60 uppercase tracking-wide">{bogorWeather.weather.weatherLabel}</p>
+              </div>
+              <div className="flex items-center gap-2 text-[9px] font-medium opacity-50">
+                <Droplets className="size-3" />
+                <span>{bogorWeather.weather.humidity}%</span>
+              </div>
+            </div>
+          )}
 
           <div className="mt-12">
             <p className="text-5xl font-mono font-black tracking-tighter text-(--text)">
@@ -134,6 +153,21 @@ export default function Home() {
             </div>
           </div>
 
+          {/* Weather Info */}
+          {brisbaneWeather.weather && (
+            <div className="mt-4 flex items-center gap-3 p-3 rounded-xl bg-orange-500/5 border border-orange-500/10">
+              <brisbaneWeather.weather.weatherIcon className="size-5 text-orange-600" />
+              <div className="flex-1">
+                <p className="text-sm font-black text-(--text)">{brisbaneWeather.weather.temperature}°C</p>
+                <p className="text-[9px] font-bold text-orange-600/60 uppercase tracking-wide">{brisbaneWeather.weather.weatherLabel}</p>
+              </div>
+              <div className="flex items-center gap-2 text-[9px] font-medium opacity-50">
+                <Droplets className="size-3" />
+                <span>{brisbaneWeather.weather.humidity}%</span>
+              </div>
+            </div>
+          )}
+
           <div className="mt-12">
             <p className="text-5xl font-mono font-black tracking-tighter text-(--text)">
               {times.brisbane}
@@ -152,12 +186,12 @@ export default function Home() {
           <div className="p-2 rounded-xl bg-(--accent)/20">
             <CloudRain className="size-5 text-(--accent)" />
           </div>
-          <h2 className="text-xl font-black tracking-tight text-(--text)">Jadwal Imsakiyah</h2>
+          <h2 className="text-xl font-black tracking-tight text-(--text)">Imsakiyah</h2>
         </div>
 
         <div className="grid md:grid-cols-2 gap-6">
-          <ImsakiyahCard schedule={bogorImsakiyah} />
-          <ImsakiyahCard schedule={brisbaneImsakiyah} />
+          <ImsakiyahCard schedule={bogorImsakiyah} color="blue" />
+          <ImsakiyahCard schedule={brisbaneImsakiyah} color="orange" />
         </div>
       </section>
 
