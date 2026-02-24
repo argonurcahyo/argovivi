@@ -4,10 +4,9 @@ import dynamic from 'next/dynamic'
 import Image from 'next/image' // Import Image Next.js
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { MapPin, Heart, GraduationCap, CloudRain, ArrowRight, Compass, Plane, CloudSun, Droplets, Wind } from 'lucide-react'
-import Head from 'next/head'
+import { MapPin, Heart, GraduationCap, CloudRain, Compass, Droplets, DollarSign } from 'lucide-react'
 import ImsakiyahCard from '@/components/ImsakiyahCard'
-import WeatherCard from '@/components/WeatherCard'
+import CurrencyCard from '@/components/CurrencyCard'
 import { bogorImsakiyah, brisbaneImsakiyah } from '@/data/imsakiyah'
 import { useWeather } from '@/lib/useWeather'
 
@@ -193,6 +192,18 @@ export default function Home() {
           <ImsakiyahCard schedule={bogorImsakiyah} color="blue" />
           <ImsakiyahCard schedule={brisbaneImsakiyah} color="orange" />
         </div>
+      </section>
+
+      {/* CURRENCY SECTION */}
+      <section className="space-y-6 pt-4 px-2">
+        <div className="flex items-center gap-3">
+          <div className="p-2 rounded-xl bg-(--accent)/20">
+            <DollarSign className="size-5 text-(--accent)" />
+          </div>
+          <h2 className="text-xl font-black tracking-tight text-(--text)">Currency</h2>
+        </div>
+
+        <CurrencyCard />
       </section>
 
       {/* MAP SECTION */}
